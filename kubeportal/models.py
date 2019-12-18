@@ -13,6 +13,11 @@ import logging
 
 logger = logging.getLogger('KubePortal')
 
+class KubernetesNamespaceManager(models.Manager):
+    def get_queryset(self):
+        valid_users = User.objects().filter(service_account__is_null = False)
+        valid_namespaces = valid_users.values_list("namespace", flat = True)
+        return valid_namespaces
 
 class KubernetesNamespace(models.Model):
     '''
@@ -21,8 +26,8 @@ class KubernetesNamespace(models.Model):
     name = models.CharField(
         max_length=100, help_text="Lower case alphanumeric characters or '-', and must start and end with an alphanumeric character (e.g. 'my-name', or '123-abc').")
     uid = models.CharField(max_length=50, null=True, editable=False)
-    visible = models.BooleanField(
-        default=True, help_text='Visibility in admin interface. Can only be configured by a superuser.')
+    objects = models.Manager()
+    visible_objects = KubernetesNamespaceManager()
 
     def __str__(self):
         return self.name

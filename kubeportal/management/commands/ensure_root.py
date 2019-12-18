@@ -14,6 +14,6 @@ class Command(BaseCommand):
             pw = User.objects.make_random_password()
             user.password = make_password(pw)
             user.save()
-            print("Superuser created, password is '{0}'.".format(pw))
+            print('Superuser created, password is "{0}".'.format(pw))
         else:
             print("Superuser exists, nothing changed.")

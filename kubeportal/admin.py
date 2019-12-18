@@ -63,7 +63,7 @@ class KubernetesServiceAccountAdmin(admin.ModelAdmin):
 
 
 class KubernetesNamespaceAdmin(admin.ModelAdmin):
-    list_display = ['name', 'visible']
+    list_display = ['name']
 
     def has_change_permission(self, request, obj=None):
         '''
@@ -82,16 +82,9 @@ class KubernetesNamespaceAdmin(admin.ModelAdmin):
         Only superusers can change the visibility flag, all the time.
         '''
         if obj:
-            if request.user.is_superuser:
-                return ['name', ]
-            else:
-                # Case as above in has_change_permission()
-                return ['name', 'visible', ]
+            return ['name']
         else:
-            if request.user.is_superuser:
-                return []
-            else:
-                return ['visible', ]
+            return []
 
     def has_delete_permission(self, request, obj=None):
         '''
